@@ -13,7 +13,7 @@ function loadNavigation() {
     if (!header) return;
 
     header.innerHTML = `
-        <div class="header-content">
+        <div class="header-top">
             <div class="logo-section">
                 <div class="logo-badge">
                     <img src="images/troopersLogo.jpg" alt="NH Troopers Association Logo">
@@ -23,11 +23,19 @@ function loadNavigation() {
                     <p>Supporting NH Troopers & Community Programs</p>
                 </div>
             </div>
-            <nav>
+        </div>
+        <div class="header-nav">
+            <nav class="nav-container">
+                <button class="menu-toggle" aria-label="Toggle menu">
+                    <div class="menu-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
                 <ul class="nav-menu">
                     <li><a href="index.html" data-page="index">Home</a></li>
                     <li><a href="about.html" data-page="about">About Us</a></li>
-                    <li><a href="membership.html" data-page="membership">Membership</a></li>
                     <li><a href="events.html" data-page="events">Events</a></li>
                     <li><a href="contact.html" data-page="contact">Contact</a></li>
                     <li><a href="https://rallypay.com/nhta" target="_blank" rel="noopener" style="background: var(--accent-color); border-color: var(--gold-accent);">💙 DONATE</a></li>
@@ -35,6 +43,9 @@ function loadNavigation() {
             </nav>
         </div>
     `;
+    
+    // Initialize menu toggle after DOM is ready
+    initMenuToggle();
 }
 
 // Load footer
@@ -59,7 +70,6 @@ function loadFooter() {
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
-                    <li><a href="membership.html">Membership</a></li>
                     <li><a href="events.html">Events</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="https://rallypay.com/nhta" target="_blank" rel="noopener" style="color: var(--gold-accent); font-weight: 700;">Donate</a></li>
@@ -88,6 +98,36 @@ function loadFooter() {
             </p>
         </div>
     `;
+}
+
+// Initialize mobile menu toggle
+function initMenuToggle() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (!menuToggle || !navMenu) return;
+    
+    menuToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+    
+    // Close menu when clicking a link
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+    });
 }
 
 // Set active navigation link based on current page
